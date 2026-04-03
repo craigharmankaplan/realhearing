@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audiogram Marking Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0c1220;
+    --bg-secondary: #131b2e;
+    --bg-card: #182038;
+    --bg-grid: #1a2440;
+    --border: #263354;
+    --border-light: #2e4070;
+    --text-primary: #e8ecf4;
+    --text-secondary: #8c9ab5;
+    --text-muted: #5a6a8a;
+    --right-ear: #ef4444;
+    --right-ear-glow: rgba(239, 68, 68, 0.25);
+    --left-ear: #3b82f6;
+    --left-ear-glow: rgba(59, 130, 246, 0.25);
+    --accent: #6366f1;
+    --accent-glow: rgba(99, 102, 241, 0.2);
+    --success: #22c55e;
+    --success-bg: rgba(34, 197, 94, 0.12);
+    --warning: #f59e0b;
+    --warning-bg: rgba(245, 158, 11, 0.12);
+    --error: #ef4444;
+    --error-bg: rgba(239, 68, 68, 0.12);
+    --normal-zone: rgba(34, 197, 94, 0.06);
+    --normal-zone-border: rgba(34, 197, 94, 0.15);
+    --bone-right: #f97316;
+    --bone-left: #a855f7;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .header h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+    background: linear-gradient(135deg, #e8ecf4 0%, #8c9ab5 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .header p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  /* Layout */
+  .main-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+    align-items: start;
+  }
+
+  @media (max-width: 960px) {
+    .main-layout { grid-template-columns: 1fr; }
+  }
+
+  /* Cards */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .card-header h2 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card-body { padding: 20px; }
+
+  /* Toolbar */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .tool-group {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .tool-btn {
+    padding: 10px 16px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+  }
+
+  .tool-btn:hover { color: var(--text-primary); background: var(--bg-card); }
+
+  .tool-btn.active-right {
+    background: var(--right-ear);
+    color: white;
+    box-shadow: 0 0 12px var(--right-ear-glow);
+  }
+
+  .tool-btn.active-left {
+    background: var(--left-ear);
+    color: white;
+    box-shadow: 0 0 12px var(--left-ear-glow);
+  }
+
+  .tool-btn.active-bone-right {
+    background: var(--bone-right);
+    color: white;
+  }
+
+  .tool-btn.active-bone-left {
+    background: var(--bone-left);
+    color: white;
+  }
+
+  .tool-symbol {
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  .divider {
+    width: 1px;
+    height: 24px;
+    background: var(--border);
+    margin: 0 4px;
+  }
+
+  .action-btn {
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .action-btn:hover { color: var(--text-primary); border-color: var(--border-light); }
+
+  .action-btn.danger:hover { color: var(--error); border-color: var(--error); }
+
+  /* Mode selector */
+  .mode-selector {
+    display: flex;
+    gap: 0;
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .mode-btn {
+    padding: 10px 16px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .mode-btn:hover { color: var(--text-primary); }
+
+  .mode-btn.active {
+    background: var(--accent);
+    color: white;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 12px 16px;
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    margin-bottom: 16px;
+    font-size: 0.78rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-secondary);
+  }
+
+  .legend-symbol {
+    font-weight: 700;
+    font-size: 0.95rem;
+    width: 20px;
+    text-align: center;
+    line-height: 1;
+  }
+
+  /* Audiogram Container */
+  .audiogram-wrapper {
+    position: relative;
+    background: var(--bg-grid);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .audiogram-canvas-area {
+    position: relative;
+    cursor: crosshair;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .audiogram-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Threshold Table */
+  .threshold-panel { margin-top: 16px; }
+
+  .threshold-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+  }
+
+  .threshold-table th {
+    padding: 8px 10px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .threshold-table td {
+    padding: 7px 10px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-secondary);
+  }
+
+  .threshold-table td.right-val { color: var(--right-ear); }
+  .threshold-table td.left-val { color: var(--left-ear); }
+  .threshold-table td.bone-right-val { color: var(--bone-right); }
+  .threshold-table td.bone-left-val { color: var(--bone-left); }
+  .threshold-table td.empty { color: var(--text-muted); }
+
+  /* Sidebar */
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+
+  /* Info panels */
+  .info-section { margin-bottom: 14px; }
+
+  .info-section h3 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    font-size: 0.78rem;
+    border-bottom: 1px solid rgba(38, 51, 84, 0.5);
+  }
+
+  .info-row:last-child { border-bottom: none; }
+
+  .info-label { color: var(--text-secondary); }
+
+  .info-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    font-size: 0.75rem;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+
+  .badge-normal { background: var(--success-bg); color: var(--success); }
+  .badge-mild { background: var(--warning-bg); color: var(--warning); }
+  .badge-moderate { background: rgba(249, 115, 22, 0.12); color: #f97316; }
+  .badge-mod-severe { background: var(--error-bg); color: var(--error); }
+  .badge-severe { background: rgba(190, 18, 60, 0.12); color: #f43f5e; }
+  .badge-profound { background: rgba(168, 85, 247, 0.12); color: #a855f7; }
+
+  /* Practice mode panel */
+  .practice-panel {
+    padding: 16px;
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+
+  .practice-panel h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .practice-description {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin-bottom: 12px;
+  }
+
+  .scenario-btn {
+    display: block;
+    width: 100%;
+    padding: 10px 14px;
+    margin-bottom: 6px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+  }
+
+  .scenario-btn:hover { border-color: var(--accent); background: var(--accent-glow); }
+
+  .scenario-btn.active { border-color: var(--accent); background: var(--accent-glow); }
+
+  .scenario-label {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 3px;
+  }
+
+  /* Check button */
+  .check-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    border: none;
+    border-radius: 10px;
+    background: var(--accent);
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .check-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+  .check-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Results */
+  .result-card {
+    padding: 14px;
+    border-radius: 10px;
+    margin-top: 12px;
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+
+  .result-card.pass {
+    background: var(--success-bg);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    color: var(--success);
+  }
+
+  .result-card.fail {
+    background: var(--error-bg);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+  }
+
+  .result-card strong { display: block; margin-bottom: 4px; }
+
+  /* Tooltip */
+  .tooltip {
+    position: absolute;
+    padding: 6px 10px;
+    background: rgba(0,0,0,0.85);
+    color: white;
+    font-size: 0.72rem;
+    font-family: 'JetBrains Mono', monospace;
+    border-radius: 6px;
+    pointer-events: none;
+    z-index: 100;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .tooltip.visible { opacity: 1; }
+
+  /* Keyboard instructions */
+  .keyboard-hint {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+
+  .keyboard-hint kbd {
+    display: inline-block;
+    padding: 1px 6px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg-secondary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text-secondary);
+  }
+
+  /* Undo snackbar */
+  .snackbar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    z-index: 200;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  }
+
+  .snackbar.visible { transform: translateX(-50%) translateY(0); }
+
+  .snackbar-action {
+    color: var(--accent);
+    background: none;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .app-container { padding: 16px 12px 40px; }
+    .header h1 { font-size: 1.35rem; }
+    .toolbar { gap: 6px; }
+    .legend { gap: 10px; font-size: 0.72rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  <div class="header">
+    <h1>Audiogram Marking Practice</h1>
+    <p>Practice marking audiograms using ASHA-standard symbols. Click on the audiogram grid to place thresholds at the correct frequency and hearing level.</p>
+  </div>
+
+  <!-- Mode Tabs -->
+  <div style="display:flex; justify-content:center; margin-bottom:20px;">
+    <div class="mode-selector">
+      <button class="mode-btn active" onclick="setMode('free')">Free Practice</button>
+      <button class="mode-btn" onclick="setMode('scenario')">Guided Scenarios</button>
+    </div>
+  </div>
+
+  <div class="main-layout">
+    <div class="left-col">
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <div class="tool-group" id="symbolGroup">
+          <button class="tool-btn active-right" data-tool="air-right" onclick="selectTool('air-right')">
+            <span class="tool-symbol" style="color:inherit">O</span> Right AC
+          </button>
+          <button class="tool-btn" data-tool="air-left" onclick="selectTool('air-left')">
+            <span class="tool-symbol" style="color:inherit">X</span> Left AC
+          </button>
+          <button class="tool-btn" data-tool="bone-right" onclick="selectTool('bone-right')">
+            <span class="tool-symbol" style="color:inherit">&lt;</span> Right BC
+          </button>
+          <button class="tool-btn" data-tool="bone-left" onclick="selectTool('bone-left')">
+            <span class="tool-symbol" style="color:inherit">&gt;</span> Left BC
+          </button>
+        </div>
+        <div class="divider"></div>
+        <button class="action-btn" onclick="undoLast()" title="Undo last (Ctrl+Z)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10h10a5 5 0 0 1 0 10H9"/><path d="M3 10l4-4M3 10l4 4"/></svg>
+          Undo
+        </button>
+        <button class="action-btn danger" onclick="resetAll()" title="Clear all">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+          Reset
+        </button>
+      </div>
+
+      <!-- Legend -->
+      <div class="legend">
+        <div class="legend-item"><span class="legend-symbol" style="color:var(--right-ear)">O</span> Right air (unmasked)</div>
+        <div class="legend-item"><span class="legend-symbol" style="color:var(--left-ear)">X</span> Left air (unmasked)</div>
+        <div class="legend-item"><span class="legend-symbol" style="color:var(--bone-right)">&lt;</span> Right bone (unmasked)</div>
+        <div class="legend-item"><span class="legend-symbol" style="color:var(--bone-left)">&gt;</span> Left bone (unmasked)</div>
+      </div>
+
+      <!-- Audiogram -->
+      <div class="card">
+        <div class="audiogram-wrapper">
+          <div class="audiogram-canvas-area" id="audiogramArea">
+            <svg id="audiogramSVG" class="audiogram-svg" viewBox="0 0 700 520" xmlns="http://www.w3.org/2000/svg"></svg>
+            <div class="tooltip" id="tooltip"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Threshold Table -->
+      <div class="threshold-panel">
+        <div class="card">
+          <div class="card-header">
+            <h2>Placed Thresholds</h2>
+            <span style="font-size:0.72rem; color:var(--text-muted)" id="markerCount">0 markers placed</span>
+          </div>
+          <div class="card-body" style="padding:0; overflow-x:auto;">
+            <table class="threshold-table" id="thresholdTable">
+              <thead>
+                <tr>
+                  <th>Ear / Type</th>
+                  <th>250</th><th>500</th><th>1000</th><th>2000</th><th>3000</th><th>4000</th><th>6000</th><th>8000</th>
+                </tr>
+              </thead>
+              <tbody id="thresholdBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="keyboard-hint">
+        <kbd>1</kbd> Right AC &nbsp; <kbd>2</kbd> Left AC &nbsp; <kbd>3</kbd> Right BC &nbsp; <kbd>4</kbd> Left BC &nbsp; <kbd>Ctrl+Z</kbd> Undo &nbsp; <kbd>Esc</kbd> Reset
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Classification Panel -->
+      <div class="card" id="classificationCard">
+        <div class="card-header"><h2>Classification</h2></div>
+        <div class="card-body" id="classificationBody">
+          <p style="font-size:0.78rem; color:var(--text-muted); text-align:center; padding:16px 0;">Place thresholds to see hearing loss classification</p>
+        </div>
+      </div>
+
+      <!-- Scenario Panel (hidden by default) -->
+      <div class="card" id="scenarioCard" style="display:none;">
+        <div class="card-header"><h2>Practice Scenarios</h2></div>
+        <div class="card-body" id="scenarioBody"></div>
+      </div>
+
+      <!-- Reference Panel -->
+      <div class="card">
+        <div class="card-header"><h2>Quick Reference</h2></div>
+        <div class="card-body">
+          <div class="info-section">
+            <h3>Degree of Hearing Loss (dB HL)</h3>
+            <div class="info-row"><span class="info-label">Normal</span> <span class="badge badge-normal">−10 to 15</span></div>
+            <div class="info-row"><span class="info-label">Slight</span> <span class="badge badge-mild">16 – 25</span></div>
+            <div class="info-row"><span class="info-label">Mild</span> <span class="badge badge-mild">26 – 40</span></div>
+            <div class="info-row"><span class="info-label">Moderate</span> <span class="badge badge-moderate">41 – 55</span></div>
+            <div class="info-row"><span class="info-label">Mod-Severe</span> <span class="badge badge-mod-severe">56 – 70</span></div>
+            <div class="info-row"><span class="info-label">Severe</span> <span class="badge badge-severe">71 – 90</span></div>
+            <div class="info-row"><span class="info-label">Profound</span> <span class="badge badge-profound">91+</span></div>
+          </div>
+          <div class="info-section">
+            <h3>ASHA Symbol Guide</h3>
+            <div class="info-row"><span class="info-label" style="color:var(--right-ear)">O</span> <span class="info-value">Right air conduction (unmasked)</span></div>
+            <div class="info-row"><span class="info-label" style="color:var(--left-ear)">X</span> <span class="info-value">Left air conduction (unmasked)</span></div>
+            <div class="info-row"><span class="info-label" style="color:var(--bone-right)">&lt;</span> <span class="info-value">Right bone conduction (unmasked)</span></div>
+            <div class="info-row"><span class="info-label" style="color:var(--bone-left)">&gt;</span> <span class="info-value">Left bone conduction (unmasked)</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="snackbar" id="snackbar">
+  <span id="snackbarText">Marker removed</span>
+  <button class="snackbar-action" onclick="undoLast()">UNDO</button>
+</div>
+
+<script>
+// ============ Configuration ============
+const FREQUENCIES = [250, 500, 1000, 2000, 3000, 4000, 6000, 8000];
+const DB_MIN = -10;
+const DB_MAX = 120;
+const DB_STEP = 10;
+
+// Grid layout within SVG viewBox (700 x 520)
+const GRID = {
+  left: 70,
+  top: 40,
+  right: 670,
+  bottom: 490,
+};
+GRID.width = GRID.right - GRID.left;
+GRID.height = GRID.bottom - GRID.top;
+
+// Logarithmic x positions for frequencies
+const FREQ_LOG = FREQUENCIES.map(f => Math.log2(f));
+const FREQ_LOG_MIN = Math.log2(250);
+const FREQ_LOG_MAX = Math.log2(8000);
+
+function freqToX(freq) {
+  const logF = Math.log2(freq);
+  return GRID.left + ((logF - FREQ_LOG_MIN) / (FREQ_LOG_MAX - FREQ_LOG_MIN)) * GRID.width;
+}
+
+function dbToY(db) {
+  return GRID.top + ((db - DB_MIN) / (DB_MAX - DB_MIN)) * GRID.height;
+}
+
+function yToDb(y) {
+  const raw = DB_MIN + ((y - GRID.top) / GRID.height) * (DB_MAX - DB_MIN);
+  return Math.round(raw / 5) * 5; // snap to 5 dB
+}
+
+function xToFreq(x) {
+  const logF = FREQ_LOG_MIN + ((x - GRID.left) / GRID.width) * (FREQ_LOG_MAX - FREQ_LOG_MIN);
+  // Snap to nearest standard frequency
+  let closest = FREQUENCIES[0], closestDist = Infinity;
+  for (const f of FREQUENCIES) {
+    const dist = Math.abs(Math.log2(f) - logF);
+    if (dist < closestDist) { closestDist = dist; closest = f; }
+  }
+  return closest;
+}
+
+// ============ State ============
+let currentTool = 'air-right';
+let markers = []; // {freq, db, type: 'air-right'|'air-left'|'bone-right'|'bone-left'}
+let undoStack = [];
+let appMode = 'free'; // 'free' or 'scenario'
+let activeScenario = null;
+
+// ============ Draw SVG Audiogram ============
+function drawGrid() {
+  const svg = document.getElementById('audiogramSVG');
+  svg.innerHTML = '';
+  const ns = 'http://www.w3.org/2000/svg';
+
+  // Normal hearing zone
+  const normalRect = document.createElementNS(ns, 'rect');
+  normalRect.setAttribute('x', GRID.left);
+  normalRect.setAttribute('y', dbToY(-10));
+  normalRect.setAttribute('width', GRID.width);
+  normalRect.setAttribute('height', dbToY(25) - dbToY(-10));
+  normalRect.setAttribute('fill', 'rgba(34,197,94,0.04)');
+  normalRect.setAttribute('stroke', 'rgba(34,197,94,0.1)');
+  normalRect.setAttribute('stroke-dasharray', '4,4');
+  svg.appendChild(normalRect);
+
+  // Normal label
+  const normalLabel = document.createElementNS(ns, 'text');
+  normalLabel.setAttribute('x', GRID.right - 4);
+  normalLabel.setAttribute('y', dbToY(7));
+  normalLabel.setAttribute('text-anchor', 'end');
+  normalLabel.setAttribute('fill', 'rgba(34,197,94,0.35)');
+  normalLabel.setAttribute('font-size', '10');
+  normalLabel.setAttribute('font-family', 'DM Sans, sans-serif');
+  normalLabel.textContent = 'Normal range';
+  svg.appendChild(normalLabel);
+
+  // Horizontal grid lines (dB)
+  for (let db = DB_MIN; db <= DB_MAX; db += DB_STEP) {
+    const y = dbToY(db);
+    const line = document.createElementNS(ns, 'line');
+    line.setAttribute('x1', GRID.left);
+    line.setAttribute('y1', y);
+    line.setAttribute('x2', GRID.right);
+    line.setAttribute('y2', y);
+    line.setAttribute('stroke', db === 0 ? '#3a4a6a' : '#1f2d4a');
+    line.setAttribute('stroke-width', db === 0 ? '1.5' : '0.5');
+    svg.appendChild(line);
+
+    // dB label
+    const text = document.createElementNS(ns, 'text');
+    text.setAttribute('x', GRID.left - 8);
+    text.setAttribute('y', y + 4);
+    text.setAttribute('text-anchor', 'end');
+    text.setAttribute('fill', '#5a6a8a');
+    text.setAttribute('font-size', '11');
+    text.setAttribute('font-family', 'JetBrains Mono, monospace');
+    text.textContent = db;
+    svg.appendChild(text);
+  }
+
+  // Vertical grid lines (Freq)
+  for (const freq of FREQUENCIES) {
+    const x = freqToX(freq);
+    const line = document.createElementNS(ns, 'line');
+    line.setAttribute('x1', x);
+    line.setAttribute('y1', GRID.top);
+    line.setAttribute('x2', x);
+    line.setAttribute('y2', GRID.bottom);
+    line.setAttribute('stroke', '#1f2d4a');
+    line.setAttribute('stroke-width', '0.5');
+    svg.appendChild(line);
+
+    // Frequency label
+    const text = document.createElementNS(ns, 'text');
+    text.setAttribute('x', x);
+    text.setAttribute('y', GRID.top - 10);
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('fill', '#5a6a8a');
+    text.setAttribute('font-size', '11');
+    text.setAttribute('font-family', 'JetBrains Mono, monospace');
+    text.textContent = freq >= 1000 ? (freq / 1000) + 'k' : freq;
+    svg.appendChild(text);
+  }
+
+  // Axis labels
+  const freqLabel = document.createElementNS(ns, 'text');
+  freqLabel.setAttribute('x', (GRID.left + GRID.right) / 2);
+  freqLabel.setAttribute('y', 18);
+  freqLabel.setAttribute('text-anchor', 'middle');
+  freqLabel.setAttribute('fill', '#8c9ab5');
+  freqLabel.setAttribute('font-size', '12');
+  freqLabel.setAttribute('font-weight', '600');
+  freqLabel.setAttribute('font-family', 'DM Sans, sans-serif');
+  freqLabel.textContent = 'FREQUENCY (Hz)';
+  svg.appendChild(freqLabel);
+
+  const dbLabel = document.createElementNS(ns, 'text');
+  dbLabel.setAttribute('transform', `translate(16, ${(GRID.top + GRID.bottom) / 2}) rotate(-90)`);
+  dbLabel.setAttribute('text-anchor', 'middle');
+  dbLabel.setAttribute('fill', '#8c9ab5');
+  dbLabel.setAttribute('font-size', '12');
+  dbLabel.setAttribute('font-weight', '600');
+  dbLabel.setAttribute('font-family', 'DM Sans, sans-serif');
+  dbLabel.textContent = 'HEARING LEVEL (dB HL)';
+  svg.appendChild(dbLabel);
+
+  // Draw markers
+  drawMarkers(svg);
+  // Draw connecting lines
+  drawLines(svg);
+}
+
+function drawMarkers(svg) {
+  const ns = 'http://www.w3.org/2000/svg';
+
+  for (const m of markers) {
+    const x = freqToX(m.freq);
+    const y = dbToY(m.db);
+
+    if (m.type === 'air-right') {
+      // Red O
+      const circle = document.createElementNS(ns, 'circle');
+      circle.setAttribute('cx', x);
+      circle.setAttribute('cy', y);
+      circle.setAttribute('r', 10);
+      circle.setAttribute('fill', 'none');
+      circle.setAttribute('stroke', '#ef4444');
+      circle.setAttribute('stroke-width', '2.5');
+      circle.classList.add('marker');
+      svg.appendChild(circle);
+    } else if (m.type === 'air-left') {
+      // Blue X
+      const g = document.createElementNS(ns, 'g');
+      g.classList.add('marker');
+      const l1 = document.createElementNS(ns, 'line');
+      l1.setAttribute('x1', x - 8); l1.setAttribute('y1', y - 8);
+      l1.setAttribute('x2', x + 8); l1.setAttribute('y2', y + 8);
+      l1.setAttribute('stroke', '#3b82f6'); l1.setAttribute('stroke-width', '2.5');
+      l1.setAttribute('stroke-linecap', 'round');
+      const l2 = document.createElementNS(ns, 'line');
+      l2.setAttribute('x1', x + 8); l2.setAttribute('y1', y - 8);
+      l2.setAttribute('x2', x - 8); l2.setAttribute('y2', y + 8);
+      l2.setAttribute('stroke', '#3b82f6'); l2.setAttribute('stroke-width', '2.5');
+      l2.setAttribute('stroke-linecap', 'round');
+      g.appendChild(l1); g.appendChild(l2);
+      svg.appendChild(g);
+    } else if (m.type === 'bone-right') {
+      // < bracket
+      const path = document.createElementNS(ns, 'path');
+      path.setAttribute('d', `M${x + 6},${y - 8} L${x - 6},${y} L${x + 6},${y + 8}`);
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', '#f97316');
+      path.setAttribute('stroke-width', '2.5');
+      path.setAttribute('stroke-linecap', 'round');
+      path.setAttribute('stroke-linejoin', 'round');
+      path.classList.add('marker');
+      svg.appendChild(path);
+    } else if (m.type === 'bone-left') {
+      // > bracket
+      const path = document.createElementNS(ns, 'path');
+      path.setAttribute('d', `M${x - 6},${y - 8} L${x + 6},${y} L${x - 6},${y + 8}`);
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', '#a855f7');
+      path.setAttribute('stroke-width', '2.5');
+      path.setAttribute('stroke-linecap', 'round');
+      path.setAttribute('stroke-linejoin', 'round');
+      path.classList.add('marker');
+      svg.appendChild(path);
+    }
+  }
+}
+
+function drawLines(svg) {
+  const ns = 'http://www.w3.org/2000/svg';
+  const types = ['air-right', 'air-left', 'bone-right', 'bone-left'];
+  const colors = { 'air-right': '#ef4444', 'air-left': '#3b82f6', 'bone-right': '#f97316', 'bone-left': '#a855f7' };
+  const dashes = { 'air-right': 'none', 'air-left': 'none', 'bone-right': '6,4', 'bone-left': '6,4' };
+
+  for (const type of types) {
+    const pts = markers
+      .filter(m => m.type === type)
+      .sort((a, b) => a.freq - b.freq);
+
+    if (pts.length < 2) continue;
+
+    let d = '';
+    for (let i = 0; i < pts.length; i++) {
+      const x = freqToX(pts[i].freq);
+      const y = dbToY(pts[i].db);
+      d += (i === 0 ? 'M' : 'L') + x + ',' + y;
+    }
+
+    const path = document.createElementNS(ns, 'path');
+    path.setAttribute('d', d);
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', colors[type]);
+    path.setAttribute('stroke-width', '1.5');
+    path.setAttribute('stroke-opacity', '0.6');
+    if (dashes[type] !== 'none') path.setAttribute('stroke-dasharray', dashes[type]);
+    svg.appendChild(path);
+  }
+}
+
+// ============ Interaction ============
+function initInteraction() {
+  const area = document.getElementById('audiogramArea');
+  const svg = document.getElementById('audiogramSVG');
+  const tooltip = document.getElementById('tooltip');
+
+  area.addEventListener('mousemove', (e) => {
+    const rect = svg.getBoundingClientRect();
+    const scaleX = 700 / rect.width;
+    const scaleY = 520 / rect.height;
+    const svgX = (e.clientX - rect.left) * scaleX;
+    const svgY = (e.clientY - rect.top) * scaleY;
+
+    if (svgX < GRID.left || svgX > GRID.right || svgY < GRID.top || svgY > GRID.bottom) {
+      tooltip.classList.remove('visible');
+      return;
+    }
+
+    const freq = xToFreq(svgX);
+    const db = yToDb(svgY);
+
+    tooltip.textContent = `${freq} Hz, ${db} dB HL`;
+    tooltip.classList.add('visible');
+
+    // Position tooltip relative to the area div
+    const tipX = e.clientX - area.getBoundingClientRect().left + 14;
+    const tipY = e.clientY - area.getBoundingClientRect().top - 28;
+    tooltip.style.left = tipX + 'px';
+    tooltip.style.top = tipY + 'px';
+  });
+
+  area.addEventListener('mouseleave', () => {
+    tooltip.classList.remove('visible');
+  });
+
+  area.addEventListener('click', (e) => {
+    const rect = svg.getBoundingClientRect();
+    const scaleX = 700 / rect.width;
+    const scaleY = 520 / rect.height;
+    const svgX = (e.clientX - rect.left) * scaleX;
+    const svgY = (e.clientY - rect.top) * scaleY;
+
+    if (svgX < GRID.left || svgX > GRID.right || svgY < GRID.top || svgY > GRID.bottom) return;
+
+    const freq = xToFreq(svgX);
+    const db = yToDb(svgY);
+
+    // Check if there's already a marker of same type at this frequency
+    const existingIdx = markers.findIndex(m => m.type === currentTool && m.freq === freq);
+
+    if (existingIdx !== -1) {
+      // If clicking near same dB, remove it; otherwise move it
+      if (Math.abs(markers[existingIdx].db - db) <= 5) {
+        undoStack.push({ action: 'remove', marker: { ...markers[existingIdx] }, index: existingIdx });
+        markers.splice(existingIdx, 1);
+        showSnackbar('Marker removed');
+      } else {
+        undoStack.push({ action: 'move', index: existingIdx, oldDb: markers[existingIdx].db });
+        markers[existingIdx].db = db;
+      }
+    } else {
+      const newMarker = { freq, db, type: currentTool };
+      markers.push(newMarker);
+      undoStack.push({ action: 'add', index: markers.length - 1 });
+    }
+
+    render();
+  });
+}
+
+// ============ Tools ============
+function selectTool(tool) {
+  currentTool = tool;
+  document.querySelectorAll('#symbolGroup .tool-btn').forEach(btn => {
+    btn.className = 'tool-btn';
+    if (btn.dataset.tool === tool) {
+      if (tool === 'air-right') btn.classList.add('active-right');
+      else if (tool === 'air-left') btn.classList.add('active-left');
+      else if (tool === 'bone-right') btn.classList.add('active-bone-right');
+      else if (tool === 'bone-left') btn.classList.add('active-bone-left');
+    }
+  });
+}
+
+function undoLast() {
+  if (undoStack.length === 0) return;
+  const last = undoStack.pop();
+  if (last.action === 'add') {
+    markers.splice(last.index, 1);
+  } else if (last.action === 'remove') {
+    markers.splice(last.index, 0, last.marker);
+  } else if (last.action === 'move') {
+    markers[last.index].db = last.oldDb;
+  }
+  render();
+}
+
+function resetAll() {
+  if (markers.length === 0) return;
+  undoStack = [];
+  markers = [];
+  activeScenario = null;
+  render();
+  updateScenarioUI();
+}
+
+// ============ Classification ============
+function classifyDb(db) {
+  if (db <= 15) return { label: 'Normal', class: 'badge-normal' };
+  if (db <= 25) return { label: 'Slight', class: 'badge-mild' };
+  if (db <= 40) return { label: 'Mild', class: 'badge-mild' };
+  if (db <= 55) return { label: 'Moderate', class: 'badge-moderate' };
+  if (db <= 70) return { label: 'Mod-Severe', class: 'badge-mod-severe' };
+  if (db <= 90) return { label: 'Severe', class: 'badge-severe' };
+  return { label: 'Profound', class: 'badge-profound' };
+}
+
+function calcPTA(earMarkers) {
+  const ptaFreqs = [500, 1000, 2000];
+  const vals = ptaFreqs.map(f => {
+    const m = earMarkers.find(m => m.freq === f);
+    return m ? m.db : null;
+  }).filter(v => v !== null);
+  if (vals.length === 0) return null;
+  return Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
+}
+
+function updateClassification() {
+  const body = document.getElementById('classificationBody');
+  const rightAC = markers.filter(m => m.type === 'air-right');
+  const leftAC = markers.filter(m => m.type === 'air-left');
+  const rightBC = markers.filter(m => m.type === 'bone-right');
+  const leftBC = markers.filter(m => m.type === 'bone-left');
+
+  if (rightAC.length === 0 && leftAC.length === 0) {
+    body.innerHTML = '<p style="font-size:0.78rem; color:var(--text-muted); text-align:center; padding:16px 0;">Place thresholds to see hearing loss classification</p>';
+    return;
+  }
+
+  let html = '';
+
+  // Right ear
+  if (rightAC.length > 0) {
+    const pta = calcPTA(rightAC);
+    const ptaClass = pta !== null ? classifyDb(pta) : null;
+    html += `<div class="info-section"><h3 style="color:var(--right-ear)">Right Ear (O)</h3>`;
+    if (ptaClass) {
+      html += `<div class="info-row"><span class="info-label">PTA (500-2k)</span><span class="info-value">${pta} dB HL <span class="badge ${ptaClass.class}">${ptaClass.label}</span></span></div>`;
+    }
+    // Air-bone gap
+    if (rightBC.length > 0) {
+      const gapFreqs = [500, 1000, 2000, 4000];
+      let gaps = [];
+      for (const f of gapFreqs) {
+        const ac = rightAC.find(m => m.freq === f);
+        const bc = rightBC.find(m => m.freq === f);
+        if (ac && bc) gaps.push({ freq: f, gap: ac.db - bc.db });
+      }
+      if (gaps.length > 0) {
+        const avgGap = Math.round(gaps.reduce((s, g) => s + g.gap, 0) / gaps.length);
+        const hasGap = gaps.some(g => g.gap >= 10);
+        let lossType = 'Sensorineural';
+        if (hasGap && ptaClass && ptaClass.label !== 'Normal') {
+          const bcPta = calcPTA(rightBC);
+          if (bcPta !== null && bcPta <= 25) lossType = 'Conductive';
+          else lossType = 'Mixed';
+        }
+        html += `<div class="info-row"><span class="info-label">Avg Air-Bone Gap</span><span class="info-value">${avgGap} dB</span></div>`;
+        html += `<div class="info-row"><span class="info-label">Type</span><span class="info-value">${lossType}</span></div>`;
+      }
+    }
+    html += '</div>';
+  }
+
+  // Left ear
+  if (leftAC.length > 0) {
+    const pta = calcPTA(leftAC);
+    const ptaClass = pta !== null ? classifyDb(pta) : null;
+    html += `<div class="info-section"><h3 style="color:var(--left-ear)">Left Ear (X)</h3>`;
+    if (ptaClass) {
+      html += `<div class="info-row"><span class="info-label">PTA (500-2k)</span><span class="info-value">${pta} dB HL <span class="badge ${ptaClass.class}">${ptaClass.label}</span></span></div>`;
+    }
+    if (leftBC.length > 0) {
+      const gapFreqs = [500, 1000, 2000, 4000];
+      let gaps = [];
+      for (const f of gapFreqs) {
+        const ac = leftAC.find(m => m.freq === f);
+        const bc = leftBC.find(m => m.freq === f);
+        if (ac && bc) gaps.push({ freq: f, gap: ac.db - bc.db });
+      }
+      if (gaps.length > 0) {
+        const avgGap = Math.round(gaps.reduce((s, g) => s + g.gap, 0) / gaps.length);
+        const hasGap = gaps.some(g => g.gap >= 10);
+        let lossType = 'Sensorineural';
+        if (hasGap && ptaClass && ptaClass.label !== 'Normal') {
+          const bcPta = calcPTA(leftBC);
+          if (bcPta !== null && bcPta <= 25) lossType = 'Conductive';
+          else lossType = 'Mixed';
+        }
+        html += `<div class="info-row"><span class="info-label">Avg Air-Bone Gap</span><span class="info-value">${avgGap} dB</span></div>`;
+        html += `<div class="info-row"><span class="info-label">Type</span><span class="info-value">${lossType}</span></div>`;
+      }
+    }
+    html += '</div>';
+  }
+
+  body.innerHTML = html;
+}
+
+// ============ Threshold Table ============
+function updateThresholdTable() {
+  const tbody = document.getElementById('thresholdBody');
+  const types = [
+    { key: 'air-right', label: 'Right AC (O)', cls: 'right-val' },
+    { key: 'air-left', label: 'Left AC (X)', cls: 'left-val' },
+    { key: 'bone-right', label: 'Right BC (<)', cls: 'bone-right-val' },
+    { key: 'bone-left', label: 'Left BC (>)', cls: 'bone-left-val' },
+  ];
+
+  let html = '';
+  let totalMarkers = 0;
+
+  for (const t of types) {
+    const typeMarkers = markers.filter(m => m.type === t.key);
+    if (typeMarkers.length === 0) continue;
+    totalMarkers += typeMarkers.length;
+
+    html += `<tr><td style="text-align:left; padding-left:14px; font-weight:600;" class="${t.cls}">${t.label}</td>`;
+    for (const f of FREQUENCIES) {
+      const m = typeMarkers.find(m => m.freq === f);
+      html += m
+        ? `<td class="${t.cls}">${m.db}</td>`
+        : `<td class="empty">—</td>`;
+    }
+    html += '</tr>';
+  }
+
+  if (html === '') {
+    html = '<tr><td colspan="9" class="empty" style="padding:16px;">Click on the audiogram to place markers</td></tr>';
+  }
+
+  tbody.innerHTML = html;
+  document.getElementById('markerCount').textContent = `${markers.length} marker${markers.length !== 1 ? 's' : ''} placed`;
+}
+
+// ============ Scenarios ============
+const SCENARIOS = [
+  {
+    id: 'normal',
+    name: 'Normal Hearing',
+    description: 'Mark thresholds showing normal hearing in both ears. All thresholds should be at or below 25 dB HL.',
+    expected: {
+      'air-right': { 250: 10, 500: 10, 1000: 10, 2000: 15, 3000: 10, 4000: 15, 6000: 15, 8000: 20 },
+      'air-left': { 250: 10, 500: 15, 1000: 10, 2000: 10, 3000: 15, 4000: 10, 6000: 20, 8000: 15 }
+    },
+    tolerance: 10
+  },
+  {
+    id: 'mild-bilateral-snhl',
+    name: 'Mild Bilateral SNHL',
+    description: 'Mark a mild sensorineural hearing loss in both ears (bilateral). Air and bone conduction thresholds should be similar, around 30–40 dB HL.',
+    expected: {
+      'air-right': { 250: 25, 500: 30, 1000: 30, 2000: 35, 3000: 35, 4000: 40, 6000: 40, 8000: 40 },
+      'air-left': { 250: 25, 500: 30, 1000: 35, 2000: 35, 3000: 40, 4000: 40, 6000: 40, 8000: 35 }
+    },
+    tolerance: 10
+  },
+  {
+    id: 'noise-notch',
+    name: 'Noise-Induced (4kHz Notch)',
+    description: 'Mark a noise-induced hearing loss pattern showing a characteristic "notch" at 4000 Hz, with recovery at 8000 Hz. Bilateral.',
+    expected: {
+      'air-right': { 250: 10, 500: 10, 1000: 15, 2000: 20, 3000: 40, 4000: 55, 6000: 40, 8000: 25 },
+      'air-left': { 250: 10, 500: 15, 1000: 15, 2000: 25, 3000: 45, 4000: 60, 6000: 45, 8000: 30 }
+    },
+    tolerance: 15
+  },
+  {
+    id: 'conductive',
+    name: 'Conductive Hearing Loss',
+    description: 'Mark a conductive hearing loss in the right ear. Place both air conduction (O) and bone conduction (<) markers. Bone conduction should be normal; air conduction should show a loss with an air-bone gap ≥ 10 dB.',
+    expected: {
+      'air-right': { 500: 45, 1000: 45, 2000: 40, 4000: 40 },
+      'bone-right': { 500: 10, 1000: 10, 2000: 10, 4000: 10 }
+    },
+    tolerance: 15
+  },
+  {
+    id: 'sloping-snhl',
+    name: 'High-Frequency Sloping SNHL',
+    description: 'Mark a sloping sensorineural hearing loss. Normal hearing in the low frequencies sloping to severe loss in the highs. Right ear.',
+    expected: {
+      'air-right': { 250: 10, 500: 15, 1000: 25, 2000: 45, 3000: 55, 4000: 65, 6000: 70, 8000: 75 }
+    },
+    tolerance: 15
+  },
+  {
+    id: 'presbycusis',
+    name: 'Presbycusis (Age-Related)',
+    description: 'Mark bilateral age-related hearing loss. Gradually sloping, worse in higher frequencies, roughly symmetric between ears.',
+    expected: {
+      'air-right': { 250: 15, 500: 20, 1000: 25, 2000: 35, 3000: 45, 4000: 55, 6000: 60, 8000: 65 },
+      'air-left': { 250: 20, 500: 20, 1000: 30, 2000: 35, 3000: 45, 4000: 55, 6000: 60, 8000: 70 }
+    },
+    tolerance: 15
+  }
+];
+
+function buildScenarioPanel() {
+  const body = document.getElementById('scenarioBody');
+  let html = '<p class="practice-description">Select a scenario and try to plot the correct audiogram pattern. Click "Check My Work" to see how close you are.</p>';
+  for (const s of SCENARIOS) {
+    html += `<button class="scenario-btn" data-id="${s.id}" onclick="loadScenario('${s.id}')">${s.name}<span class="scenario-label">${s.description.substring(0, 70)}…</span></button>`;
+  }
+  html += '<button class="check-btn" id="checkBtn" onclick="checkWork()" disabled>Check My Work</button>';
+  html += '<div id="resultArea"></div>';
+  body.innerHTML = html;
+}
+
+function loadScenario(id) {
+  activeScenario = SCENARIOS.find(s => s.id === id);
+  markers = [];
+  undoStack = [];
+  render();
+  updateScenarioUI();
+  document.getElementById('checkBtn').disabled = false;
+}
+
+function updateScenarioUI() {
+  document.querySelectorAll('.scenario-btn').forEach(btn => {
+    btn.classList.toggle('active', activeScenario && btn.dataset.id === activeScenario.id);
+  });
+  const resultArea = document.getElementById('resultArea');
+  if (resultArea) resultArea.innerHTML = '';
+}
+
+function checkWork() {
+  if (!activeScenario) return;
+  const expected = activeScenario.expected;
+  const tolerance = activeScenario.tolerance;
+  let totalExpected = 0;
+  let totalCorrect = 0;
+  let feedback = [];
+
+  for (const [type, freqMap] of Object.entries(expected)) {
+    for (const [freqStr, expectedDb] of Object.entries(freqMap)) {
+      const freq = parseInt(freqStr);
+      totalExpected++;
+      const placed = markers.find(m => m.type === type && m.freq === freq);
+      if (!placed) {
+        feedback.push(`Missing: ${typeLabel(type)} at ${freq} Hz (expected ~${expectedDb} dB)`);
+      } else if (Math.abs(placed.db - expectedDb) > tolerance) {
+        feedback.push(`${typeLabel(type)} at ${freq} Hz: you placed ${placed.db} dB, expected ~${expectedDb} dB`);
+      } else {
+        totalCorrect++;
+      }
+    }
+  }
+
+  const pct = Math.round((totalCorrect / totalExpected) * 100);
+  const pass = pct >= 75;
+  const resultArea = document.getElementById('resultArea');
+  let html = `<div class="result-card ${pass ? 'pass' : 'fail'}">`;
+  html += `<strong>${pass ? '✓' : '✗'} ${pct}% correct (${totalCorrect}/${totalExpected})</strong>`;
+  if (feedback.length > 0 && feedback.length <= 6) {
+    html += feedback.join('<br>');
+  } else if (feedback.length > 6) {
+    html += feedback.slice(0, 5).join('<br>') + `<br>…and ${feedback.length - 5} more`;
+  } else {
+    html += 'Great work! Your audiogram matches the expected pattern.';
+  }
+  html += '</div>';
+  resultArea.innerHTML = html;
+}
+
+function typeLabel(type) {
+  const labels = { 'air-right': 'Right AC (O)', 'air-left': 'Left AC (X)', 'bone-right': 'Right BC (<)', 'bone-left': 'Left BC (>)' };
+  return labels[type] || type;
+}
+
+// ============ Mode ============
+function setMode(mode) {
+  appMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.toLowerCase().includes(mode === 'free' ? 'free' : 'guided'));
+  });
+  document.getElementById('scenarioCard').style.display = mode === 'scenario' ? '' : 'none';
+  if (mode === 'scenario') buildScenarioPanel();
+}
+
+// ============ Snackbar ============
+function showSnackbar(text) {
+  const bar = document.getElementById('snackbar');
+  document.getElementById('snackbarText').textContent = text;
+  bar.classList.add('visible');
+  clearTimeout(bar._timeout);
+  bar._timeout = setTimeout(() => bar.classList.remove('visible'), 3000);
+}
+
+// ============ Render ============
+function render() {
+  drawGrid();
+  updateThresholdTable();
+  updateClassification();
+}
+
+// ============ Keyboard ============
+document.addEventListener('keydown', (e) => {
+  if (e.key === '1') selectTool('air-right');
+  if (e.key === '2') selectTool('air-left');
+  if (e.key === '3') selectTool('bone-right');
+  if (e.key === '4') selectTool('bone-left');
+  if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); undoLast(); }
+  if (e.key === 'Escape') resetAll();
+});
+
+// ============ Init ============
+drawGrid();
+initInteraction();
+updateThresholdTable();
+</script>
+</body>
+</html>
