@@ -86,6 +86,11 @@
     .main-layout { grid-template-columns: 1fr; }
   }
 
+  @media (max-width: 540px) {
+    .mode-selector { flex-direction: column; width: 100%; }
+    .mode-btn { min-width: 0; width: 100%; }
+  }
+
   /* Cards */
   .card {
     background: var(--bg-card);
@@ -205,33 +210,254 @@
   .action-btn.danger:hover { color: var(--error); border-color: var(--error); }
 
   /* Mode selector */
+  .mode-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
   .mode-selector {
     display: flex;
-    gap: 0;
-    background: var(--bg-secondary);
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    overflow: hidden;
+    gap: 10px;
   }
 
   .mode-btn {
-    padding: 10px 16px;
-    border: none;
-    background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 14px 20px;
+    border: 1.5px solid var(--border);
+    background: var(--bg-card);
     color: var(--text-secondary);
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 500;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 220px;
+    text-align: left;
+  }
+
+  .mode-btn-icon {
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+  }
+
+  .mode-btn-label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .mode-btn-sub {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .mode-btn:hover {
+    border-color: var(--border-light);
+    transform: translateY(-1px);
+  }
+
+  .mode-btn.active {
+    border-color: var(--accent);
+    background: var(--accent-glow);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  }
+
+  .mode-btn.active .mode-btn-label { color: var(--text-primary); }
+
+  .mode-link {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    text-decoration: underline;
+    text-decoration-color: var(--border);
+    text-underline-offset: 3px;
+    transition: color 0.2s;
+  }
+
+  .mode-link:hover { color: var(--text-secondary); }
+
+  .mode-link.active {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+  }
+
+  /* Scenario Stage (above audiogram) */
+  .stage {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    display: none;
+  }
+
+  .stage.visible { display: block; }
+
+  .stage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .stage-title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .stage-progress {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .scenario-picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .chip {
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    border-radius: 999px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
     cursor: pointer;
     transition: all 0.2s;
   }
 
-  .mode-btn:hover { color: var(--text-primary); }
+  .chip:hover { border-color: var(--border-light); color: var(--text-primary); }
 
-  .mode-btn.active {
+  .chip.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  .stage-scenario-name {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+
+  .stage-scenario-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin-bottom: 14px;
+  }
+
+  .stage-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .stage-btn {
+    padding: 9px 16px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .stage-btn.primary {
     background: var(--accent);
     color: white;
   }
+  .stage-btn.primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  .stage-btn.primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    filter: none;
+  }
+
+  .stage-btn.secondary {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+  }
+  .stage-btn.secondary:hover { border-color: var(--border-light); }
+
+  .stage-empty {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    padding: 6px 0;
+  }
+
+  .reveal-explanation {
+    background: var(--bg-secondary);
+    border-left: 3px solid var(--accent);
+    padding: 10px 14px;
+    margin-top: 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    line-height: 1.55;
+  }
+
+  .reveal-explanation strong { color: var(--accent); }
+
+  .live-hint {
+    background: var(--warning-bg);
+    border-left: 3px solid var(--warning);
+    padding: 10px 14px;
+    margin-top: 10px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    color: var(--text-primary);
+    line-height: 1.5;
+    animation: hint-in 0.25s ease-out;
+  }
+
+  @keyframes hint-in {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .submit-result {
+    margin-top: 14px;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    line-height: 1.55;
+  }
+
+  .submit-result.pass {
+    background: var(--success-bg);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+  }
+  .submit-result.fail {
+    background: var(--error-bg);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+  .submit-result strong { display: block; margin-bottom: 6px; font-size: 0.95rem; }
+  .submit-result ul { margin: 6px 0 0 18px; }
+  .submit-result li { margin-bottom: 3px; }
 
   /* Legend */
   .legend {
@@ -545,19 +771,40 @@
 <div class="app-container">
   <div class="header">
     <h1>Audiogram Marking Practice</h1>
-    <p>Practice marking audiograms using ASHA-standard symbols. Click on the audiogram grid to place thresholds at the correct frequency and hearing level.</p>
+    <p>Learn to mark audiograms using ASHA-standard symbols. Start by watching a worked example, then try one yourself.</p>
   </div>
 
   <!-- Mode Tabs -->
-  <div style="display:flex; justify-content:center; margin-bottom:20px;">
+  <div class="mode-wrap">
     <div class="mode-selector">
-      <button class="mode-btn active" onclick="setMode('free')">Free Practice</button>
-      <button class="mode-btn" onclick="setMode('scenario')">Guided Scenarios</button>
+      <button class="mode-btn active" data-mode="show" onclick="setMode('show')">
+        <span class="mode-btn-icon">👁</span>
+        <span class="mode-btn-label">Show me an example</span>
+        <span class="mode-btn-sub">Watch a worked solution</span>
+      </button>
+      <button class="mode-btn" data-mode="try" onclick="setMode('try')">
+        <span class="mode-btn-icon">✎</span>
+        <span class="mode-btn-label">Let me try</span>
+        <span class="mode-btn-sub">Practice with feedback</span>
+      </button>
     </div>
+    <button class="mode-link" data-mode="free" onclick="setMode('free')">or use Free Practice (blank canvas)</button>
   </div>
 
   <div class="main-layout">
     <div class="left-col">
+      <!-- Scenario Stage (Show me / Let me try) -->
+      <div class="stage" id="scenarioStage">
+        <div class="stage-header">
+          <span class="stage-title" id="stageTitle">Pick a scenario to begin</span>
+          <span class="stage-progress" id="stageProgress"></span>
+        </div>
+        <div class="scenario-picker" id="scenarioPicker"></div>
+        <div id="stageContent">
+          <p class="stage-empty">Choose a scenario above to see a worked example or start practicing.</p>
+        </div>
+      </div>
+
       <!-- Toolbar -->
       <div class="toolbar">
         <div class="tool-group" id="symbolGroup">
@@ -637,12 +884,6 @@
         <div class="card-body" id="classificationBody">
           <p style="font-size:0.78rem; color:var(--text-muted); text-align:center; padding:16px 0;">Place thresholds to see hearing loss classification</p>
         </div>
-      </div>
-
-      <!-- Scenario Panel (hidden by default) -->
-      <div class="card" id="scenarioCard" style="display:none;">
-        <div class="card-header"><h2>Practice Scenarios</h2></div>
-        <div class="card-body" id="scenarioBody"></div>
       </div>
 
       <!-- Reference Panel -->
@@ -728,7 +969,7 @@ function xToFreq(x) {
 let currentTool = 'air-right';
 let markers = []; // {freq, db, type: 'air-right'|'air-left'|'bone-right'|'bone-left'}
 let undoStack = [];
-let appMode = 'free'; // 'free' or 'scenario'
+let appMode = 'show'; // 'free' | 'show' | 'try'
 let activeScenario = null;
 
 // ============ Draw SVG Audiogram ============
@@ -985,14 +1226,23 @@ function initInteraction() {
       } else {
         undoStack.push({ action: 'move', index: existingIdx, oldDb: markers[existingIdx].db });
         markers[existingIdx].db = db;
+        if (appMode === 'try') checkLiveFeedback(markers[existingIdx]);
       }
     } else {
       const newMarker = { freq, db, type: currentTool };
       markers.push(newMarker);
       undoStack.push({ action: 'add', index: markers.length - 1 });
+      if (appMode === 'try') checkLiveFeedback(newMarker);
     }
 
     render();
+    if (appMode === 'try' && activeScenario && !submitted) {
+      // Update marker count in stage progress and submit button enabled state
+      const progressEl = document.getElementById('stageProgress');
+      if (progressEl) progressEl.textContent = `${markers.length} marker${markers.length !== 1 ? 's' : ''} placed`;
+      const submitBtn = document.getElementById('submitBtn');
+      if (submitBtn) submitBtn.disabled = markers.length === 0;
+    }
   });
 }
 
@@ -1027,9 +1277,10 @@ function resetAll() {
   if (markers.length === 0) return;
   undoStack = [];
   markers = [];
-  activeScenario = null;
+  if (appMode === 'show') revealStepIndex = 0;
+  if (appMode === 'try') submitted = false;
   render();
-  updateScenarioUI();
+  if (appMode !== 'free') renderStageContent();
 }
 
 // ============ Classification ============
@@ -1176,99 +1427,298 @@ const SCENARIOS = [
   {
     id: 'normal',
     name: 'Normal Hearing',
-    description: 'Mark thresholds showing normal hearing in both ears. All thresholds should be at or below 25 dB HL.',
+    description: 'A patient presents for a routine screening with no reported hearing concerns. Mark thresholds showing normal hearing in both ears (all thresholds at or below 25 dB HL).',
+    overview: 'Normal hearing means thresholds across all tested frequencies fall within −10 to 25 dB HL. Both ears should look similar, and the audiogram should sit entirely inside the normal-hearing zone (the green band on the chart).',
     expected: {
       'air-right': { 250: 10, 500: 10, 1000: 10, 2000: 15, 3000: 10, 4000: 15, 6000: 15, 8000: 20 },
       'air-left': { 250: 10, 500: 15, 1000: 10, 2000: 10, 3000: 15, 4000: 10, 6000: 20, 8000: 15 }
     },
+    revealSteps: [
+      {
+        markers: [['air-right', 250, 10], ['air-right', 500, 10], ['air-right', 1000, 10], ['air-right', 2000, 15]],
+        explanation: '<strong>Right ear, low and mid frequencies.</strong> Place O symbols at 5–15 dB. These thresholds sit comfortably inside the normal range. We test 250–2000 Hz first because they cover the speech-critical range.'
+      },
+      {
+        markers: [['air-right', 3000, 10], ['air-right', 4000, 15], ['air-right', 6000, 15], ['air-right', 8000, 20]],
+        explanation: '<strong>Right ear, high frequencies.</strong> Even at 8 kHz the threshold stays at 20 dB — still within normal limits. A small high-frequency drop is common and not concerning unless it exceeds 25 dB.'
+      },
+      {
+        markers: [['air-left', 250, 10], ['air-left', 500, 15], ['air-left', 1000, 10], ['air-left', 2000, 10]],
+        explanation: '<strong>Left ear, low and mid frequencies.</strong> Place X symbols. The two ears should look similar in a patient with no pathology — within about 10 dB of each other at every frequency.'
+      },
+      {
+        markers: [['air-left', 3000, 15], ['air-left', 4000, 10], ['air-left', 6000, 20], ['air-left', 8000, 15]],
+        explanation: '<strong>Left ear, high frequencies.</strong> All within normal limits. Notice we did not need bone conduction here — when air conduction is normal, bone conduction will be too, so it adds no diagnostic information.'
+      }
+    ],
     tolerance: 10
   },
   {
     id: 'mild-bilateral-snhl',
     name: 'Mild Bilateral SNHL',
-    description: 'Mark a mild sensorineural hearing loss in both ears (bilateral). Air and bone conduction thresholds should be similar, around 30–40 dB HL.',
+    description: 'A 52-year-old reports difficulty hearing in restaurants. Mark a mild sensorineural hearing loss in both ears, with thresholds around 30–40 dB HL.',
+    overview: 'Sensorineural hearing loss (SNHL) means damage to the cochlea or auditory nerve. The hallmark on an audiogram is air and bone conduction thresholds that match — there is no air-bone gap. Mild loss is in the 26–40 dB range.',
     expected: {
       'air-right': { 250: 25, 500: 30, 1000: 30, 2000: 35, 3000: 35, 4000: 40, 6000: 40, 8000: 40 },
       'air-left': { 250: 25, 500: 30, 1000: 35, 2000: 35, 3000: 40, 4000: 40, 6000: 40, 8000: 35 }
     },
+    revealSteps: [
+      {
+        markers: [['air-right', 250, 25], ['air-right', 500, 30], ['air-right', 1000, 30], ['air-right', 2000, 35]],
+        explanation: '<strong>Right ear, lower frequencies.</strong> All thresholds fall in the mild loss range (26–40 dB). The pattern is fairly flat — no sharp drop — which is typical for early-stage SNHL.'
+      },
+      {
+        markers: [['air-right', 3000, 35], ['air-right', 4000, 40], ['air-right', 6000, 40], ['air-right', 8000, 40]],
+        explanation: '<strong>Right ear, higher frequencies.</strong> Slight worsening in the highs, but still mild. Patients describe this as "I hear you but I can\'t understand you" — high-frequency consonants like /s/, /f/, and /th/ carry word clarity.'
+      },
+      {
+        markers: [['air-left', 250, 25], ['air-left', 500, 30], ['air-left', 1000, 35], ['air-left', 2000, 35], ['air-left', 3000, 40], ['air-left', 4000, 40], ['air-left', 6000, 40], ['air-left', 8000, 35]],
+        explanation: '<strong>Left ear, full sweep.</strong> Nearly mirrors the right ear — bilateral, symmetric loss. Symmetry suggests a systemic cause (aging, noise exposure, ototoxicity) rather than a localized problem.'
+      }
+    ],
     tolerance: 10
   },
   {
     id: 'noise-notch',
     name: 'Noise-Induced (4kHz Notch)',
-    description: 'Mark a noise-induced hearing loss pattern showing a characteristic "notch" at 4000 Hz, with recovery at 8000 Hz. Bilateral.',
+    description: 'A 38-year-old construction worker reports tinnitus and trouble hearing speech in noise. Mark the classic noise-induced pattern: a notch at 4000 Hz with partial recovery at 8000 Hz, bilateral.',
+    overview: 'Noise-induced hearing loss leaves a signature "notch" — a sharp dip centered around 3000–6000 Hz, with thresholds improving (partially) at 8000 Hz. This pattern reflects the basilar membrane region most vulnerable to noise damage.',
     expected: {
       'air-right': { 250: 10, 500: 10, 1000: 15, 2000: 20, 3000: 40, 4000: 55, 6000: 40, 8000: 25 },
       'air-left': { 250: 10, 500: 15, 1000: 15, 2000: 25, 3000: 45, 4000: 60, 6000: 45, 8000: 30 }
     },
+    revealSteps: [
+      {
+        markers: [['air-right', 250, 10], ['air-right', 500, 10], ['air-right', 1000, 15], ['air-right', 2000, 20]],
+        explanation: '<strong>Right ear, low and mid frequencies.</strong> Normal up through 2 kHz. Patients with noise-induced loss often have completely normal-sounding speech reception in quiet — the damage hides in the highs.'
+      },
+      {
+        markers: [['air-right', 3000, 40], ['air-right', 4000, 55]],
+        explanation: '<strong>The notch begins.</strong> Sharp drop at 3 kHz and floor of the notch at 4 kHz (55 dB). This is the diagnostic feature. The 4 kHz region is most vulnerable because of its position on the basilar membrane and the resonance of the ear canal.'
+      },
+      {
+        markers: [['air-right', 6000, 40], ['air-right', 8000, 25]],
+        explanation: '<strong>Recovery at 8 kHz.</strong> Thresholds improve back toward normal at 8 kHz. This rebound is what distinguishes a noise notch from a sloping high-frequency loss — the latter would keep getting worse.'
+      },
+      {
+        markers: [['air-left', 250, 10], ['air-left', 500, 15], ['air-left', 1000, 15], ['air-left', 2000, 25], ['air-left', 3000, 45], ['air-left', 4000, 60], ['air-left', 6000, 45], ['air-left', 8000, 30]],
+        explanation: '<strong>Left ear shows the same pattern.</strong> Bilateral, fairly symmetric notches at 4 kHz are the textbook presentation for occupational or recreational noise exposure (firearms, machinery, music).'
+      }
+    ],
     tolerance: 15
   },
   {
     id: 'conductive',
     name: 'Conductive Hearing Loss',
-    description: 'Mark a conductive hearing loss in the right ear. Place both air conduction (O) and bone conduction (<) markers. Bone conduction should be normal; air conduction should show a loss with an air-bone gap ≥ 10 dB.',
+    description: 'A 7-year-old with a recent ear infection has reduced hearing in the right ear. Mark a conductive hearing loss with normal bone conduction and an air-bone gap of at least 10 dB.',
+    overview: 'Conductive hearing loss happens when sound is blocked from reaching the cochlea — fluid, infection, perforation, or ossicular problems. Bone conduction (which bypasses the outer/middle ear) is normal; air conduction is impaired. The gap between them is the air-bone gap.',
     expected: {
       'air-right': { 500: 45, 1000: 45, 2000: 40, 4000: 40 },
       'bone-right': { 500: 10, 1000: 10, 2000: 10, 4000: 10 }
     },
+    revealSteps: [
+      {
+        markers: [['bone-right', 500, 10], ['bone-right', 1000, 10], ['bone-right', 2000, 10], ['bone-right', 4000, 10]],
+        explanation: '<strong>Bone conduction first (&lt; symbols).</strong> All within normal limits. Bone conduction tests cochlear function directly by vibrating the skull, bypassing the outer and middle ear. Normal BC tells us the inner ear is healthy.'
+      },
+      {
+        markers: [['air-right', 500, 45], ['air-right', 1000, 45], ['air-right', 2000, 40], ['air-right', 4000, 40]],
+        explanation: '<strong>Air conduction (O symbols).</strong> Thresholds in the moderate loss range. Notice the gap: BC sits at 10 dB and AC sits at 40–45 dB. That <strong>30–35 dB air-bone gap</strong> is the signature of conductive loss. Treatment can address the middle-ear cause and restore hearing.'
+      }
+    ],
     tolerance: 15
   },
   {
     id: 'sloping-snhl',
     name: 'High-Frequency Sloping SNHL',
-    description: 'Mark a sloping sensorineural hearing loss. Normal hearing in the low frequencies sloping to severe loss in the highs. Right ear.',
+    description: 'A 68-year-old reports trouble understanding women\'s and children\'s voices. Mark a sloping sensorineural loss in the right ear: normal lows, severe highs.',
+    overview: 'A sloping audiogram falls progressively from low to high frequencies. This is one of the most common patterns in adult audiology, often reflecting cumulative noise exposure plus aging. Unlike a noise notch, the slope keeps descending.',
     expected: {
       'air-right': { 250: 10, 500: 15, 1000: 25, 2000: 45, 3000: 55, 4000: 65, 6000: 70, 8000: 75 }
     },
+    revealSteps: [
+      {
+        markers: [['air-right', 250, 10], ['air-right', 500, 15], ['air-right', 1000, 25]],
+        explanation: '<strong>Low frequencies — normal to borderline.</strong> 250 and 500 Hz are normal. By 1 kHz we are at the edge of normal. Patients hear vowels and bass voices fine.'
+      },
+      {
+        markers: [['air-right', 2000, 45], ['air-right', 3000, 55]],
+        explanation: '<strong>The slope steepens.</strong> A 20 dB drop from 1 to 2 kHz is significant. This is where speech intelligibility starts to suffer — most consonant energy lives between 2 and 4 kHz.'
+      },
+      {
+        markers: [['air-right', 4000, 65], ['air-right', 6000, 70], ['air-right', 8000, 75]],
+        explanation: '<strong>Severe loss in the highs.</strong> No rebound at 8 kHz — the loss continues to worsen. This is what distinguishes a sloping SNHL from a noise notch. Hearing aids would prioritize amplification above 2 kHz.'
+      }
+    ],
     tolerance: 15
   },
   {
     id: 'presbycusis',
     name: 'Presbycusis (Age-Related)',
-    description: 'Mark bilateral age-related hearing loss. Gradually sloping, worse in higher frequencies, roughly symmetric between ears.',
+    description: 'A 74-year-old reports gradual hearing decline over several years, worse on the phone. Mark bilateral, gradually sloping age-related hearing loss.',
+    overview: 'Presbycusis is age-related sensorineural loss. The pattern is bilateral, gradually sloping, and roughly symmetric. Onset is slow and the patient often does not notice until the loss reaches the moderate range.',
     expected: {
       'air-right': { 250: 15, 500: 20, 1000: 25, 2000: 35, 3000: 45, 4000: 55, 6000: 60, 8000: 65 },
       'air-left': { 250: 20, 500: 20, 1000: 30, 2000: 35, 3000: 45, 4000: 55, 6000: 60, 8000: 70 }
     },
+    revealSteps: [
+      {
+        markers: [['air-right', 250, 15], ['air-right', 500, 20], ['air-right', 1000, 25], ['air-right', 2000, 35]],
+        explanation: '<strong>Right ear, lower frequencies.</strong> Begins within normal limits and gently slopes into mild loss by 2 kHz. The gradual descent is characteristic — no sharp drops, no notches.'
+      },
+      {
+        markers: [['air-right', 3000, 45], ['air-right', 4000, 55], ['air-right', 6000, 60], ['air-right', 8000, 65]],
+        explanation: '<strong>Right ear, higher frequencies.</strong> Continues to slope into moderate-severe range. The smooth, monotonic descent is what differentiates presbycusis from noise-induced loss.'
+      },
+      {
+        markers: [['air-left', 250, 20], ['air-left', 500, 20], ['air-left', 1000, 30], ['air-left', 2000, 35], ['air-left', 3000, 45], ['air-left', 4000, 55], ['air-left', 6000, 60], ['air-left', 8000, 70]],
+        explanation: '<strong>Left ear mirrors the right.</strong> Symmetric, bilateral, gradually sloping. This is the classic "ski-slope" audiogram. Most candidates benefit from bilateral hearing aids with high-frequency emphasis.'
+      }
+    ],
     tolerance: 15
   }
 ];
 
-function buildScenarioPanel() {
-  const body = document.getElementById('scenarioBody');
-  let html = '<p class="practice-description">Select a scenario and try to plot the correct audiogram pattern. Click "Check My Work" to see how close you are.</p>';
-  for (const s of SCENARIOS) {
-    html += `<button class="scenario-btn" data-id="${s.id}" onclick="loadScenario('${s.id}')">${s.name}<span class="scenario-label">${s.description.substring(0, 70)}…</span></button>`;
-  }
-  html += '<button class="check-btn" id="checkBtn" onclick="checkWork()" disabled>Check My Work</button>';
-  html += '<div id="resultArea"></div>';
-  body.innerHTML = html;
+// ============ Scenario Stage State ============
+let revealStepIndex = 0;
+let submitted = false;
+
+function buildScenarioPicker() {
+  const picker = document.getElementById('scenarioPicker');
+  picker.innerHTML = SCENARIOS.map(s =>
+    `<button class="chip${activeScenario && activeScenario.id === s.id ? ' active' : ''}" data-id="${s.id}" onclick="loadScenario('${s.id}')">${s.name}</button>`
+  ).join('');
 }
 
 function loadScenario(id) {
   activeScenario = SCENARIOS.find(s => s.id === id);
   markers = [];
   undoStack = [];
+  revealStepIndex = 0;
+  submitted = false;
   render();
-  updateScenarioUI();
-  document.getElementById('checkBtn').disabled = false;
+  buildScenarioPicker();
+  renderStageContent();
 }
 
-function updateScenarioUI() {
-  document.querySelectorAll('.scenario-btn').forEach(btn => {
-    btn.classList.toggle('active', activeScenario && btn.dataset.id === activeScenario.id);
-  });
-  const resultArea = document.getElementById('resultArea');
-  if (resultArea) resultArea.innerHTML = '';
+function renderStageContent() {
+  const content = document.getElementById('stageContent');
+  const titleEl = document.getElementById('stageTitle');
+  const progressEl = document.getElementById('stageProgress');
+
+  if (!activeScenario) {
+    titleEl.textContent = appMode === 'show' ? 'Pick a scenario to walk through' : 'Pick a scenario to practice';
+    progressEl.textContent = '';
+    content.innerHTML = '<p class="stage-empty">Choose a scenario above to begin.</p>';
+    return;
+  }
+
+  if (appMode === 'show') {
+    renderShowMode(content, titleEl, progressEl);
+  } else if (appMode === 'try') {
+    renderTryMode(content, titleEl, progressEl);
+  }
 }
 
-function checkWork() {
-  if (!activeScenario) return;
+function renderShowMode(content, titleEl, progressEl) {
+  titleEl.textContent = 'Worked example';
+  const totalSteps = activeScenario.revealSteps.length;
+  progressEl.textContent = revealStepIndex === 0 ? 'Read the overview, then reveal each group of markers.' : `Step ${revealStepIndex} of ${totalSteps}`;
+
+  let html = `<div class="stage-scenario-name">${activeScenario.name}</div>`;
+  html += `<div class="stage-scenario-desc">${activeScenario.description}</div>`;
+
+  if (revealStepIndex === 0) {
+    html += `<div class="reveal-explanation"><strong>Overview.</strong> ${activeScenario.overview}</div>`;
+    html += `<div class="stage-controls" style="margin-top:14px;">
+      <button class="stage-btn primary" onclick="revealNext()">Reveal first markers →</button>
+    </div>`;
+  } else {
+    const step = activeScenario.revealSteps[revealStepIndex - 1];
+    html += `<div class="reveal-explanation">${step.explanation}</div>`;
+    html += `<div class="stage-controls" style="margin-top:14px;">`;
+    if (revealStepIndex < totalSteps) {
+      html += `<button class="stage-btn primary" onclick="revealNext()">Reveal next →</button>`;
+    } else {
+      html += `<button class="stage-btn primary" onclick="setMode('try'); loadScenario('${activeScenario.id}')">Now let me try this one →</button>`;
+    }
+    html += `<button class="stage-btn secondary" onclick="loadScenario('${activeScenario.id}')">Restart walkthrough</button>`;
+    html += `</div>`;
+  }
+
+  content.innerHTML = html;
+}
+
+function revealNext() {
+  if (!activeScenario || appMode !== 'show') return;
+  if (revealStepIndex >= activeScenario.revealSteps.length) return;
+  const step = activeScenario.revealSteps[revealStepIndex];
+  for (const [type, freq, db] of step.markers) {
+    if (!markers.find(m => m.type === type && m.freq === freq)) {
+      markers.push({ type, freq, db });
+    }
+  }
+  revealStepIndex++;
+  render();
+  renderStageContent();
+}
+
+function renderTryMode(content, titleEl, progressEl) {
+  titleEl.textContent = 'Practice mode';
+  progressEl.textContent = `${markers.length} marker${markers.length !== 1 ? 's' : ''} placed`;
+
+  let html = `<div class="stage-scenario-name">${activeScenario.name}</div>`;
+  html += `<div class="stage-scenario-desc">${activeScenario.description}</div>`;
+  html += `<div class="stage-controls">
+    <button class="stage-btn primary" id="submitBtn" onclick="submitWork()" ${markers.length === 0 ? 'disabled' : ''}>Submit</button>
+    <button class="stage-btn secondary" onclick="loadScenario('${activeScenario.id}')">Reset this scenario</button>
+  </div>`;
+  html += `<div id="liveHintArea"></div>`;
+  html += `<div id="submitResultArea"></div>`;
+
+  content.innerHTML = html;
+}
+
+function checkLiveFeedback(marker) {
+  // Called after a marker is placed in 'try' mode.
+  // Show a hint only if the marker is far outside tolerance for an expected position,
+  // OR if the marker type isn't even part of this scenario.
+  if (appMode !== 'try' || !activeScenario || submitted) return;
+  const hintArea = document.getElementById('liveHintArea');
+  if (!hintArea) return;
+
+  const expected = activeScenario.expected;
+  const tolerance = activeScenario.tolerance;
+  let hint = '';
+
+  if (!expected[marker.type]) {
+    hint = `This scenario doesn't use ${typeLabel(marker.type)} markers. Try one of the symbols listed in the scenario description.`;
+  } else if (expected[marker.type][marker.freq] === undefined) {
+    hint = `This scenario doesn't expect a marker at ${marker.freq} Hz for ${typeLabel(marker.type)}. Check the scenario description for which frequencies to plot.`;
+  } else {
+    const expectedDb = expected[marker.type][marker.freq];
+    const diff = Math.abs(marker.db - expectedDb);
+    if (diff > tolerance * 1.5) {
+      const direction = marker.db > expectedDb ? 'lower' : 'higher';
+      hint = `That looks like it might be off — your ${typeLabel(marker.type)} at ${marker.freq} Hz is at ${marker.db} dB, but the expected pattern would put it ${direction} on the chart. (No grade yet — keep going and submit when ready.)`;
+    }
+  }
+
+  if (hint) {
+    hintArea.innerHTML = `<div class="live-hint">${hint}</div>`;
+  } else {
+    hintArea.innerHTML = '';
+  }
+}
+
+function submitWork() {
+  if (!activeScenario || appMode !== 'try') return;
+  submitted = true;
   const expected = activeScenario.expected;
   const tolerance = activeScenario.tolerance;
   let totalExpected = 0;
   let totalCorrect = 0;
-  let feedback = [];
+  let issues = [];
 
   for (const [type, freqMap] of Object.entries(expected)) {
     for (const [freqStr, expectedDb] of Object.entries(freqMap)) {
@@ -1276,29 +1726,54 @@ function checkWork() {
       totalExpected++;
       const placed = markers.find(m => m.type === type && m.freq === freq);
       if (!placed) {
-        feedback.push(`Missing: ${typeLabel(type)} at ${freq} Hz (expected ~${expectedDb} dB)`);
+        issues.push(`Missing ${typeLabel(type)} at ${freq} Hz (expected around ${expectedDb} dB).`);
       } else if (Math.abs(placed.db - expectedDb) > tolerance) {
-        feedback.push(`${typeLabel(type)} at ${freq} Hz: you placed ${placed.db} dB, expected ~${expectedDb} dB`);
+        const direction = placed.db > expectedDb ? 'too low (worse hearing) than expected' : 'too high (better hearing) than expected';
+        issues.push(`${typeLabel(type)} at ${freq} Hz: you placed ${placed.db} dB, but ${direction}. Expected around ${expectedDb} dB.`);
       } else {
         totalCorrect++;
       }
     }
   }
 
+  // Extra markers that aren't in expected
+  for (const m of markers) {
+    if (!expected[m.type] || expected[m.type][m.freq] === undefined) {
+      issues.push(`Extra marker: ${typeLabel(m.type)} at ${m.freq} Hz wasn't expected for this scenario.`);
+    }
+  }
+
   const pct = Math.round((totalCorrect / totalExpected) * 100);
   const pass = pct >= 75;
-  const resultArea = document.getElementById('resultArea');
-  let html = `<div class="result-card ${pass ? 'pass' : 'fail'}">`;
-  html += `<strong>${pass ? '✓' : '✗'} ${pct}% correct (${totalCorrect}/${totalExpected})</strong>`;
-  if (feedback.length > 0 && feedback.length <= 6) {
-    html += feedback.join('<br>');
-  } else if (feedback.length > 6) {
-    html += feedback.slice(0, 5).join('<br>') + `<br>…and ${feedback.length - 5} more`;
+
+  let html = `<div class="submit-result ${pass ? 'pass' : 'fail'}">`;
+  html += `<strong>${pass ? '✓ Nicely done — ' : 'Not quite — '}${pct}% correct (${totalCorrect} of ${totalExpected})</strong>`;
+  if (issues.length === 0) {
+    html += 'Your audiogram matches the expected pattern within tolerance.';
   } else {
-    html += 'Great work! Your audiogram matches the expected pattern.';
+    html += '<em>How to improve:</em><ul>';
+    for (const issue of issues.slice(0, 6)) {
+      html += `<li>${issue}</li>`;
+    }
+    if (issues.length > 6) html += `<li>…and ${issues.length - 6} more.</li>`;
+    html += '</ul>';
   }
+  html += `<div class="stage-controls" style="margin-top:14px;">
+    <button class="stage-btn primary" onclick="tryAnother()">Try another scenario →</button>
+    <button class="stage-btn secondary" onclick="loadScenario('${activeScenario.id}')">Try this one again</button>
+  </div>`;
   html += '</div>';
-  resultArea.innerHTML = html;
+
+  document.getElementById('submitResultArea').innerHTML = html;
+  document.getElementById('liveHintArea').innerHTML = '';
+}
+
+function tryAnother() {
+  // Cycle to the next scenario in the list
+  if (!activeScenario) return;
+  const idx = SCENARIOS.findIndex(s => s.id === activeScenario.id);
+  const next = SCENARIOS[(idx + 1) % SCENARIOS.length];
+  loadScenario(next.id);
 }
 
 function typeLabel(type) {
@@ -1309,11 +1784,38 @@ function typeLabel(type) {
 // ============ Mode ============
 function setMode(mode) {
   appMode = mode;
+  // Update top buttons
   document.querySelectorAll('.mode-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent.toLowerCase().includes(mode === 'free' ? 'free' : 'guided'));
+    btn.classList.toggle('active', btn.dataset.mode === mode);
   });
-  document.getElementById('scenarioCard').style.display = mode === 'scenario' ? '' : 'none';
-  if (mode === 'scenario') buildScenarioPanel();
+  document.querySelector('.mode-link').classList.toggle('active', mode === 'free');
+
+  // Show/hide stage
+  const stage = document.getElementById('scenarioStage');
+  if (mode === 'free') {
+    stage.classList.remove('visible');
+    activeScenario = null;
+    markers = [];
+    undoStack = [];
+    render();
+  } else {
+    stage.classList.add('visible');
+    // Reset scenario state when switching between show/try (but keep activeScenario)
+    if (activeScenario) {
+      markers = [];
+      undoStack = [];
+      revealStepIndex = 0;
+      submitted = false;
+      render();
+    }
+    buildScenarioPicker();
+    renderStageContent();
+  }
+
+  // Toolbar interactivity: disable in 'show' mode (it's a demonstration)
+  const toolbar = document.querySelector('.toolbar');
+  if (toolbar) toolbar.style.opacity = mode === 'show' ? '0.4' : '1';
+  if (toolbar) toolbar.style.pointerEvents = mode === 'show' ? 'none' : 'auto';
 }
 
 // ============ Snackbar ============
@@ -1346,6 +1848,7 @@ document.addEventListener('keydown', (e) => {
 drawGrid();
 initInteraction();
 updateThresholdTable();
+setMode('show');
 </script>
 </body>
 </html>
