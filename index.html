@@ -4,40 +4,59 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Audiogram Marking Practice</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg-primary: #0c1220;
-    --bg-secondary: #131b2e;
-    --bg-card: #182038;
-    --bg-grid: #1a2440;
-    --border: #263354;
-    --border-light: #2e4070;
-    --text-primary: #e8ecf4;
-    --text-secondary: #8c9ab5;
-    --text-muted: #5a6a8a;
-    --right-ear: #ef4444;
-    --right-ear-glow: rgba(239, 68, 68, 0.25);
-    --left-ear: #3b82f6;
-    --left-ear-glow: rgba(59, 130, 246, 0.25);
-    --accent: #6366f1;
-    --accent-glow: rgba(99, 102, 241, 0.2);
-    --success: #22c55e;
-    --success-bg: rgba(34, 197, 94, 0.12);
-    --warning: #f59e0b;
-    --warning-bg: rgba(245, 158, 11, 0.12);
-    --error: #ef4444;
-    --error-bg: rgba(239, 68, 68, 0.12);
-    --normal-zone: rgba(34, 197, 94, 0.06);
-    --normal-zone-border: rgba(34, 197, 94, 0.15);
-    --bone-right: #f97316;
-    --bone-left: #a855f7;
+    /* Kaplan brand */
+    --kaplan-purple: #240F6E;
+    --kaplan-purple-shade1: #503F8B;
+    --kaplan-purple-shade2: #7C6CA7;
+    --kaplan-purple-shade3: #A79FC5;
+    --kaplan-blue: #005DE8;
+    --kaplan-green: #287D21;
+    --kaplan-yellow: #FFC82E;
+    --kaplan-red: #D6083B;
+
+    /* Neutrals (Kaplan spec) */
+    --bg-primary: #FFFFFF;
+    --bg-secondary: #F9FAFB;
+    --bg-card: #FFFFFF;
+    --bg-grid: #F9FAFB;
+    --border: #E5E7EB;
+    --border-light: #A79FC5;
+    --text-primary: #2D2D2D;
+    --text-secondary: #6B7280;
+    --text-muted: #9CA3AF;
+
+    /* Accent → Kaplan Purple */
+    --accent: #240F6E;
+    --accent-glow: rgba(36, 15, 110, 0.08);
+
+    /* ASHA-standard audiogram ear colors (clinical convention — preserved) */
+    --right-ear: #D6083B;
+    --right-ear-glow: rgba(214, 8, 59, 0.2);
+    --left-ear: #005DE8;
+    --left-ear-glow: rgba(0, 93, 232, 0.2);
+    --bone-right: #B85B00;
+    --bone-left: #503F8B;
+
+    /* Status colors */
+    --success: #287D21;
+    --success-bg: rgba(40, 125, 33, 0.1);
+    --warning: #B45309;
+    --warning-bg: rgba(255, 200, 46, 0.18);
+    --error: #D6083B;
+    --error-bg: rgba(214, 8, 59, 0.08);
+    --normal-zone: rgba(40, 125, 33, 0.06);
+    --normal-zone-border: rgba(40, 125, 33, 0.2);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Open Sans', Arial, sans-serif;
     background: var(--bg-primary);
     color: var(--text-primary);
     min-height: 100vh;
@@ -57,13 +76,15 @@
   }
 
   .header h1 {
-    font-size: 1.75rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    margin-bottom: 6px;
-    background: linear-gradient(135deg, #e8ecf4 0%, #8c9ab5 100%);
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.85rem;
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #240F6E 0%, #503F8B 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   .header p {
@@ -97,6 +118,7 @@
     border: 1px solid var(--border);
     border-radius: 14px;
     overflow: hidden;
+    box-shadow: 0 1px 3px rgba(36, 15, 110, 0.06);
   }
 
   .card-header {
@@ -110,9 +132,11 @@
   }
 
   .card-header h2 {
-    font-size: 0.95rem;
-    font-weight: 600;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1rem;
+    font-weight: 700;
     letter-spacing: -0.01em;
+    color: var(--kaplan-purple);
   }
 
   .card-body { padding: 20px; }
@@ -141,7 +165,7 @@
     border: none;
     background: transparent;
     color: var(--text-secondary);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Open Sans', Arial, sans-serif;
     font-size: 0.82rem;
     font-weight: 500;
     cursor: pointer;
@@ -195,7 +219,7 @@
     border-radius: 10px;
     background: var(--bg-secondary);
     color: var(--text-secondary);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Open Sans', Arial, sans-serif;
     font-size: 0.82rem;
     font-weight: 500;
     cursor: pointer;
@@ -232,7 +256,7 @@
     border: 1.5px solid var(--border);
     background: var(--bg-card);
     color: var(--text-secondary);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Open Sans', Arial, sans-serif;
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.2s;
@@ -265,7 +289,7 @@
   .mode-btn.active {
     border-color: var(--accent);
     background: var(--accent-glow);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    box-shadow: 0 0 0 3px rgba(36, 15, 110, 0.12);
   }
 
   .mode-btn.active .mode-btn-label { color: var(--text-primary); }
@@ -274,7 +298,7 @@
     background: transparent;
     border: none;
     color: var(--text-muted);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Open Sans', Arial, sans-serif;
     font-size: 0.78rem;
     cursor: pointer;
     padding: 4px 8px;
@@ -338,7 +362,7 @@
     background: var(--bg-secondary);
     color: var(--text-secondary);
     border-radius: 999px;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Open Sans', Arial, sans-serif;
     font-size: 0.78rem;
     cursor: pointer;
     transition: all 0.2s;
@@ -377,7 +401,7 @@
     padding: 9px 16px;
     border: none;
     border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Open Sans', Arial, sans-serif;
     font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
@@ -449,11 +473,11 @@
 
   .submit-result.pass {
     background: var(--success-bg);
-    border: 1px solid rgba(34, 197, 94, 0.3);
+    border: 1px solid rgba(40, 125, 33, 0.25);
   }
   .submit-result.fail {
     background: var(--error-bg);
-    border: 1px solid rgba(239, 68, 68, 0.3);
+    border: 1px solid rgba(214, 8, 59, 0.25);
   }
   .submit-result strong { display: block; margin-bottom: 6px; font-size: 0.95rem; }
   .submit-result ul { margin: 6px 0 0 18px; }
@@ -532,7 +556,7 @@
   .threshold-table td {
     padding: 7px 10px;
     text-align: center;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Open Sans', Arial, sans-serif;
     font-size: 0.78rem;
     border-bottom: 1px solid var(--border);
     color: var(--text-secondary);
@@ -563,7 +587,7 @@
     align-items: center;
     padding: 6px 0;
     font-size: 0.78rem;
-    border-bottom: 1px solid rgba(38, 51, 84, 0.5);
+    border-bottom: 1px solid rgba(229, 231, 235, 0.7);
   }
 
   .info-row:last-child { border-bottom: none; }
@@ -571,7 +595,7 @@
   .info-label { color: var(--text-secondary); }
 
   .info-value {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Open Sans', Arial, sans-serif;
     font-weight: 500;
     font-size: 0.75rem;
   }
@@ -586,10 +610,10 @@
 
   .badge-normal { background: var(--success-bg); color: var(--success); }
   .badge-mild { background: var(--warning-bg); color: var(--warning); }
-  .badge-moderate { background: rgba(249, 115, 22, 0.12); color: #f97316; }
+  .badge-moderate { background: rgba(234, 88, 12, 0.12); color: #c2410c; }
   .badge-mod-severe { background: var(--error-bg); color: var(--error); }
-  .badge-severe { background: rgba(190, 18, 60, 0.12); color: #f43f5e; }
-  .badge-profound { background: rgba(168, 85, 247, 0.12); color: #a855f7; }
+  .badge-severe { background: rgba(190, 18, 60, 0.1); color: #be123c; }
+  .badge-profound { background: rgba(147, 51, 234, 0.1); color: #7e22ce; }
 
   /* Practice mode panel */
   .practice-panel {
@@ -621,7 +645,7 @@
     border-radius: 8px;
     background: var(--bg-card);
     color: var(--text-primary);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Open Sans', Arial, sans-serif;
     font-size: 0.8rem;
     font-weight: 500;
     cursor: pointer;
@@ -650,7 +674,7 @@
     border-radius: 10px;
     background: var(--accent);
     color: white;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Open Sans', Arial, sans-serif;
     font-size: 0.88rem;
     font-weight: 600;
     cursor: pointer;
@@ -676,14 +700,14 @@
 
   .result-card.pass {
     background: var(--success-bg);
-    border: 1px solid rgba(34, 197, 94, 0.3);
+    border: 1px solid rgba(40, 125, 33, 0.25);
     color: var(--success);
   }
 
   .result-card.fail {
     background: var(--error-bg);
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    color: #fca5a5;
+    border: 1px solid rgba(214, 8, 59, 0.25);
+    color: #991b1b;
   }
 
   .result-card strong { display: block; margin-bottom: 4px; }
@@ -692,10 +716,10 @@
   .tooltip {
     position: absolute;
     padding: 6px 10px;
-    background: rgba(0,0,0,0.85);
+    background: rgba(36, 15, 110, 0.92);
     color: white;
     font-size: 0.72rem;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Open Sans', Arial, sans-serif;
     border-radius: 6px;
     pointer-events: none;
     z-index: 100;
@@ -720,7 +744,7 @@
     border: 1px solid var(--border);
     border-radius: 4px;
     background: var(--bg-secondary);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Open Sans', Arial, sans-serif;
     font-size: 0.68rem;
     color: var(--text-secondary);
   }
@@ -742,7 +766,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    box-shadow: 0 8px 30px rgba(36, 15, 110, 0.18);
   }
 
   .snackbar.visible { transform: translateX(-50%) translateY(0); }
@@ -751,7 +775,7 @@
     color: var(--accent);
     background: none;
     border: none;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Open Sans', Arial, sans-serif;
     font-size: 0.82rem;
     font-weight: 600;
     cursor: pointer;
@@ -984,8 +1008,8 @@ function drawGrid() {
   normalRect.setAttribute('y', dbToY(-10));
   normalRect.setAttribute('width', GRID.width);
   normalRect.setAttribute('height', dbToY(25) - dbToY(-10));
-  normalRect.setAttribute('fill', 'rgba(34,197,94,0.04)');
-  normalRect.setAttribute('stroke', 'rgba(34,197,94,0.1)');
+  normalRect.setAttribute('fill', 'rgba(40,125,33,0.07)');
+  normalRect.setAttribute('stroke', 'rgba(40,125,33,0.25)');
   normalRect.setAttribute('stroke-dasharray', '4,4');
   svg.appendChild(normalRect);
 
@@ -994,9 +1018,9 @@ function drawGrid() {
   normalLabel.setAttribute('x', GRID.right - 4);
   normalLabel.setAttribute('y', dbToY(7));
   normalLabel.setAttribute('text-anchor', 'end');
-  normalLabel.setAttribute('fill', 'rgba(34,197,94,0.35)');
+  normalLabel.setAttribute('fill', 'rgba(40,125,33,0.6)');
   normalLabel.setAttribute('font-size', '10');
-  normalLabel.setAttribute('font-family', 'DM Sans, sans-serif');
+  normalLabel.setAttribute('font-family', 'Open Sans, Arial, sans-serif');
   normalLabel.textContent = 'Normal range';
   svg.appendChild(normalLabel);
 
@@ -1008,7 +1032,7 @@ function drawGrid() {
     line.setAttribute('y1', y);
     line.setAttribute('x2', GRID.right);
     line.setAttribute('y2', y);
-    line.setAttribute('stroke', db === 0 ? '#3a4a6a' : '#1f2d4a');
+    line.setAttribute('stroke', db === 0 ? '#9CA3AF' : '#E5E7EB');
     line.setAttribute('stroke-width', db === 0 ? '1.5' : '0.5');
     svg.appendChild(line);
 
@@ -1017,9 +1041,9 @@ function drawGrid() {
     text.setAttribute('x', GRID.left - 8);
     text.setAttribute('y', y + 4);
     text.setAttribute('text-anchor', 'end');
-    text.setAttribute('fill', '#5a6a8a');
+    text.setAttribute('fill', '#6B7280');
     text.setAttribute('font-size', '11');
-    text.setAttribute('font-family', 'JetBrains Mono, monospace');
+    text.setAttribute('font-family', 'Open Sans, Arial, sans-serif');
     text.textContent = db;
     svg.appendChild(text);
   }
@@ -1032,7 +1056,7 @@ function drawGrid() {
     line.setAttribute('y1', GRID.top);
     line.setAttribute('x2', x);
     line.setAttribute('y2', GRID.bottom);
-    line.setAttribute('stroke', '#1f2d4a');
+    line.setAttribute('stroke', '#E5E7EB');
     line.setAttribute('stroke-width', '0.5');
     svg.appendChild(line);
 
@@ -1041,9 +1065,9 @@ function drawGrid() {
     text.setAttribute('x', x);
     text.setAttribute('y', GRID.top - 10);
     text.setAttribute('text-anchor', 'middle');
-    text.setAttribute('fill', '#5a6a8a');
+    text.setAttribute('fill', '#6B7280');
     text.setAttribute('font-size', '11');
-    text.setAttribute('font-family', 'JetBrains Mono, monospace');
+    text.setAttribute('font-family', 'Open Sans, Arial, sans-serif');
     text.textContent = freq >= 1000 ? (freq / 1000) + 'k' : freq;
     svg.appendChild(text);
   }
@@ -1053,20 +1077,20 @@ function drawGrid() {
   freqLabel.setAttribute('x', (GRID.left + GRID.right) / 2);
   freqLabel.setAttribute('y', 18);
   freqLabel.setAttribute('text-anchor', 'middle');
-  freqLabel.setAttribute('fill', '#8c9ab5');
+  freqLabel.setAttribute('fill', '#240F6E');
   freqLabel.setAttribute('font-size', '12');
   freqLabel.setAttribute('font-weight', '600');
-  freqLabel.setAttribute('font-family', 'DM Sans, sans-serif');
+  freqLabel.setAttribute('font-family', 'Open Sans, Arial, sans-serif');
   freqLabel.textContent = 'FREQUENCY (Hz)';
   svg.appendChild(freqLabel);
 
   const dbLabel = document.createElementNS(ns, 'text');
   dbLabel.setAttribute('transform', `translate(16, ${(GRID.top + GRID.bottom) / 2}) rotate(-90)`);
   dbLabel.setAttribute('text-anchor', 'middle');
-  dbLabel.setAttribute('fill', '#8c9ab5');
+  dbLabel.setAttribute('fill', '#240F6E');
   dbLabel.setAttribute('font-size', '12');
   dbLabel.setAttribute('font-weight', '600');
-  dbLabel.setAttribute('font-family', 'DM Sans, sans-serif');
+  dbLabel.setAttribute('font-family', 'Open Sans, Arial, sans-serif');
   dbLabel.textContent = 'HEARING LEVEL (dB HL)';
   svg.appendChild(dbLabel);
 
@@ -1090,7 +1114,7 @@ function drawMarkers(svg) {
       circle.setAttribute('cy', y);
       circle.setAttribute('r', 10);
       circle.setAttribute('fill', 'none');
-      circle.setAttribute('stroke', '#ef4444');
+      circle.setAttribute('stroke', '#D6083B');
       circle.setAttribute('stroke-width', '2.5');
       circle.classList.add('marker');
       svg.appendChild(circle);
@@ -1101,12 +1125,12 @@ function drawMarkers(svg) {
       const l1 = document.createElementNS(ns, 'line');
       l1.setAttribute('x1', x - 8); l1.setAttribute('y1', y - 8);
       l1.setAttribute('x2', x + 8); l1.setAttribute('y2', y + 8);
-      l1.setAttribute('stroke', '#3b82f6'); l1.setAttribute('stroke-width', '2.5');
+      l1.setAttribute('stroke', '#005DE8'); l1.setAttribute('stroke-width', '2.5');
       l1.setAttribute('stroke-linecap', 'round');
       const l2 = document.createElementNS(ns, 'line');
       l2.setAttribute('x1', x + 8); l2.setAttribute('y1', y - 8);
       l2.setAttribute('x2', x - 8); l2.setAttribute('y2', y + 8);
-      l2.setAttribute('stroke', '#3b82f6'); l2.setAttribute('stroke-width', '2.5');
+      l2.setAttribute('stroke', '#005DE8'); l2.setAttribute('stroke-width', '2.5');
       l2.setAttribute('stroke-linecap', 'round');
       g.appendChild(l1); g.appendChild(l2);
       svg.appendChild(g);
@@ -1115,7 +1139,7 @@ function drawMarkers(svg) {
       const path = document.createElementNS(ns, 'path');
       path.setAttribute('d', `M${x + 6},${y - 8} L${x - 6},${y} L${x + 6},${y + 8}`);
       path.setAttribute('fill', 'none');
-      path.setAttribute('stroke', '#f97316');
+      path.setAttribute('stroke', '#B85B00');
       path.setAttribute('stroke-width', '2.5');
       path.setAttribute('stroke-linecap', 'round');
       path.setAttribute('stroke-linejoin', 'round');
@@ -1126,7 +1150,7 @@ function drawMarkers(svg) {
       const path = document.createElementNS(ns, 'path');
       path.setAttribute('d', `M${x - 6},${y - 8} L${x + 6},${y} L${x - 6},${y + 8}`);
       path.setAttribute('fill', 'none');
-      path.setAttribute('stroke', '#a855f7');
+      path.setAttribute('stroke', '#503F8B');
       path.setAttribute('stroke-width', '2.5');
       path.setAttribute('stroke-linecap', 'round');
       path.setAttribute('stroke-linejoin', 'round');
@@ -1139,7 +1163,7 @@ function drawMarkers(svg) {
 function drawLines(svg) {
   const ns = 'http://www.w3.org/2000/svg';
   const types = ['air-right', 'air-left', 'bone-right', 'bone-left'];
-  const colors = { 'air-right': '#ef4444', 'air-left': '#3b82f6', 'bone-right': '#f97316', 'bone-left': '#a855f7' };
+  const colors = { 'air-right': '#D6083B', 'air-left': '#005DE8', 'bone-right': '#B85B00', 'bone-left': '#503F8B' };
   const dashes = { 'air-right': 'none', 'air-left': 'none', 'bone-right': '6,4', 'bone-left': '6,4' };
 
   for (const type of types) {
