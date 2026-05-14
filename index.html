@@ -26,9 +26,9 @@
     --bg-grid: #F9FAFB;
     --border: #E5E7EB;
     --border-light: #A79FC5;
-    --text-primary: #2D2D2D;
-    --text-secondary: #6B7280;
-    --text-muted: #9CA3AF;
+    --text-primary: #111111;
+    --text-secondary: #2D2D2D;
+    --text-muted: #4B5563;
 
     /* Accent → Kaplan Purple */
     --accent: #240F6E;
@@ -1018,7 +1018,7 @@ function drawGrid() {
   normalLabel.setAttribute('x', GRID.right - 4);
   normalLabel.setAttribute('y', dbToY(7));
   normalLabel.setAttribute('text-anchor', 'end');
-  normalLabel.setAttribute('fill', 'rgba(40,125,33,0.6)');
+  normalLabel.setAttribute('fill', '#287D21');
   normalLabel.setAttribute('font-size', '10');
   normalLabel.setAttribute('font-family', 'Open Sans, Arial, sans-serif');
   normalLabel.textContent = 'Normal range';
@@ -1041,7 +1041,7 @@ function drawGrid() {
     text.setAttribute('x', GRID.left - 8);
     text.setAttribute('y', y + 4);
     text.setAttribute('text-anchor', 'end');
-    text.setAttribute('fill', '#6B7280');
+    text.setAttribute('fill', '#2D2D2D');
     text.setAttribute('font-size', '11');
     text.setAttribute('font-family', 'Open Sans, Arial, sans-serif');
     text.textContent = db;
@@ -1065,7 +1065,7 @@ function drawGrid() {
     text.setAttribute('x', x);
     text.setAttribute('y', GRID.top - 10);
     text.setAttribute('text-anchor', 'middle');
-    text.setAttribute('fill', '#6B7280');
+    text.setAttribute('fill', '#2D2D2D');
     text.setAttribute('font-size', '11');
     text.setAttribute('font-family', 'Open Sans, Arial, sans-serif');
     text.textContent = freq >= 1000 ? (freq / 1000) + 'k' : freq;
